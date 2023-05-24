@@ -12,8 +12,7 @@ import 'package:provider/provider.dart';
 class GiphyTabDetail extends StatefulWidget {
   final String type;
   final ScrollController scrollController;
-  GiphyTabDetail({Key? key, required this.type, required this.scrollController})
-      : super(key: key);
+  GiphyTabDetail({Key? key, required this.type, required this.scrollController}) : super(key: key);
 
   @override
   _GiphyTabDetailState createState() => _GiphyTabDetailState();
@@ -54,8 +53,7 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
   int offset = 0;
 
   // Giphy Client from library
-  late GiphyClient client =
-      GiphyClient(apiKey: _tabProvider.apiKey, randomId: _tabProvider.randomID);
+  late GiphyClient client = GiphyClient(apiKey: _tabProvider.apiKey, randomId: _tabProvider.randomID);
 
   // canLoadMore
   bool canLoadMore = true;
@@ -87,14 +85,10 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Set items count responsive
-      _crossAxisCount =
-          ((context.size?.width ?? MediaQuery.of(context).size.width) /
-                  _gifWidth)
-              .round();
+      _crossAxisCount = ((context.size?.width ?? MediaQuery.of(context).size.width) / _gifWidth).round();
 
       // Set vertical max items count
-      int _mainAxisCount =
-          ((MediaQuery.of(context).size.height - 30) / _gifWidth).round();
+      int _mainAxisCount = ((MediaQuery.of(context).size.height - 30) / _gifWidth).round();
 
       _limit = _crossAxisCount * _mainAxisCount;
       if (_limit > 100) _limit = 100;
@@ -115,6 +109,23 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
 
     // Listen query
     _appBarProvider.addListener(_listenerQuery);
+
+    // Set items count responsive
+    _crossAxisCount = (MediaQuery.of(context).size.width / _gifWidth).round();
+    if (_crossAxisCount > 3) {
+      _crossAxisCount = 3;
+    }
+
+    // Set vertical max items count
+    int _mainAxisCount = ((MediaQuery.of(context).size.height - 30) / _gifWidth).round();
+
+    _limit = _crossAxisCount * _mainAxisCount;
+
+    // Initial offset
+    offset = 0;
+
+    // Load Initial Data
+    _loadMore();
   }
 
   @override
@@ -150,8 +161,7 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
   }
 
   Widget _item(GiphyGif gif) {
-    double _aspectRatio = (double.parse(gif.images!.fixedWidth.width) /
-        double.parse(gif.images!.fixedWidth.height));
+    double _aspectRatio = (double.parse(gif.images!.fixedWidth.width) / double.parse(gif.images!.fixedWidth.height));
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
@@ -219,6 +229,9 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
 
     _isLoading = true;
 
+    // Giphy Client from library
+    GiphyClient client = GiphyClient(apiKey: _tabProvider.apiKey, randomId: _tabProvider.randomID);
+
     // Offset pagination for query
     if (_collection == null) {
       offset = 0;
@@ -230,21 +243,11 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
     if (widget.type == GiphyType.emoji) {
       _collection = await client.emojis(offset: offset, limit: _limit);
     } else {
-      // If query text is not null search gif else trendings
+      // If query text is not null search gif else trending
       if (_appBarProvider.queryText.isNotEmpty) {
-        _collection = await client.search(_appBarProvider.queryText,
-            lang: _tabProvider.lang,
-            offset: offset,
-            rating: _tabProvider.rating,
-            type: widget.type,
-            limit: _limit);
+        _collection = await client.search(_appBarProvider.queryText, lang: _tabProvider.lang, offset: offset, rating: _tabProvider.rating, type: widget.type, limit: _limit);
       } else {
-        _collection = await client.trending(
-            lang: _tabProvider.lang,
-            offset: offset,
-            rating: _tabProvider.rating,
-            type: widget.type,
-            limit: _limit);
+        _collection = await client.trending(lang: _tabProvider.lang, offset: offset, rating: _tabProvider.rating, type: widget.type, limit: _limit);
       }
     }
 
@@ -271,8 +274,7 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
 
   // Scroll listener. if scroll end load more gifs
   void _scrollListener() {
-    if (widget.scrollController.positions.last.extentAfter.lessThan(500) &&
-        !_isLoading) {
+    if (widget.scrollController.positions.last.extentAfter.lessThan(500) && !_isLoading) {
       _loadMore();
     }
   }
