@@ -8,6 +8,9 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
+  # Easily configure any flutter application with global variables using a `.env` file.
+  flutter_dotenv: ^5.1.0
+
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.2.1
