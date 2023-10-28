@@ -195,7 +195,7 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
   }
 
   Future<void> _loadMore() async {
-    print("Total of collections: ${_collection?.pagination?.totalCount}");
+    // print("Total of collections: ${_collection?.pagination?.totalCount}");
     //Return if is loading or no more gifs
     if (_isLoading || _collection?.pagination?.totalCount == _list.length) {
       print("No more object");
