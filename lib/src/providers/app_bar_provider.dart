@@ -20,6 +20,6 @@ class AppBarProvider with ChangeNotifier {
   @override
   // ignore: must_call_super
   void dispose() {
-    print("Dispose AppBarProvider");
+    // print("Dispose AppBarProvider");
   }
 }
