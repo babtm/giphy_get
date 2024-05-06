@@ -10,10 +10,7 @@ Future<void> main() async {
 
   await dotenv.load(fileName: ".env");
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-        create: (ctx) => ThemeProvider(currentTheme: ThemeMode.system))
-  ], child: const MyApp()));
+  runApp(MultiProvider(providers: [ChangeNotifierProvider(create: (ctx) => ThemeProvider(currentTheme: ThemeMode.system))], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,11 +31,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           useMaterial3: Provider.of<ThemeProvider>(context).material3),
-      localizationsDelegates: [
-        ...GlobalMaterialLocalizations.delegates,
-        GlobalWidgetsLocalizations.delegate,
-        GiphyGetUILocalizations.delegate
-      ],
+      localizationsDelegates: [...GlobalMaterialLocalizations.delegates, GlobalWidgetsLocalizations.delegate, GiphyGetUILocalizations.delegate],
       supportedLocales: const [
         Locale('en', ''),
         Locale('es', ''),
@@ -89,14 +82,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     if (giphyApiKey.isEmpty) {
       return Scaffold(
         appBar: AppBar(
           title: const Text("Giphy Get Demo"),
         ),
         body: const Center(
-          child: Text(
-              "Please set your GIPHY API KEY in the environment variables"),
+          child: Text("Please set your GIPHY API KEY in the environment variables"),
         ),
       );
     }
@@ -130,11 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       const Expanded(child: Text("Dark Mode")),
                       Switch(
-                          value:
-                              Theme.of(context).brightness == Brightness.dark,
+                          value: Theme.of(context).brightness == Brightness.dark,
                           onChanged: (value) {
-                            themeProvider.setCurrentTheme(
-                                value ? ThemeMode.dark : ThemeMode.light);
+                            themeProvider.setCurrentTheme(value ? ThemeMode.dark : ThemeMode.light);
                           })
                     ],
                   ),
@@ -152,9 +143,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 20,
                   ),
                   Text("Random ID: $randomId"),
-                  const Text(
+                  Text(
                     "Selected GIF",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: theme.textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 10,
@@ -184,8 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 tooltip: 'Open Sticker',
-                child: const Icon(Icons
-                    .insert_emoticon)), // This trailing comma makes auto-formatting nicer for build methods.
+                child: const Icon(Icons.insert_emoticon)), // This trailing comma makes auto-formatting nicer for build methods.
           );
         });
   }

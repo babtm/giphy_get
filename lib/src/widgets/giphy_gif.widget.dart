@@ -37,11 +37,9 @@ class _GiphyGifWidgetState extends State<GiphyGifWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final l = GiphyGetUILocalizations.labelsOf(context);
-    const TextStyle buttonsTextStyle = TextStyle(
-      fontSize: 12,
-      color: Colors.white,
-    );
 
     return Container(
       child: Stack(
@@ -76,7 +74,7 @@ class _GiphyGifWidgetState extends State<GiphyGifWidget> {
                   ? FittedBox(
                       child: Text(
                       l.poweredByGiphy,
-                      style: TextStyle(fontSize: 12),
+                      style: theme.textTheme.bodySmall!,
                     ))
                   : Container()
             ],
@@ -100,7 +98,7 @@ class _GiphyGifWidgetState extends State<GiphyGifWidget> {
                         },
                         child: Text(
                           l.viewOnGiphy,
-                          style: buttonsTextStyle,
+                          style: theme.textTheme.bodyMedium!,
                         )),
                     Container(
                       height: 15,
@@ -118,7 +116,7 @@ class _GiphyGifWidgetState extends State<GiphyGifWidget> {
                       },
                       child: Text(
                         '${l.moreBy} @${widget.gif.username}',
-                        style: buttonsTextStyle,
+                        style: theme.textTheme.bodyMedium!,
                       ),
                     )
                   ],
@@ -140,7 +138,7 @@ class _GiphyGifWidgetState extends State<GiphyGifWidget> {
       _showMenu = true;
     });
 
-    // Triger Timer
+    // Trigger Timer
     _timerMenu = Timer(Duration(seconds: 5), () {
       setState(() {
         _showMenu = !_showMenu;
